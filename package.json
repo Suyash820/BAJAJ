@@ -1,0 +1,19 @@
+{
+  "name": "bajaj-node-graph-explorer",
+  "version": "1.0.0",
+  "description": "BFHL Node Graph Explorer - Node.js + React",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && npm start",
+    "client": "cd client && npm start",
+    "build": "cd client && npm run build",
+    "server:prod": "cd server && NODE_ENV=production node index.js"
+  },
+  "keywords": ["node-graph", "explorer", "bfhl"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
