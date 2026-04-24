@@ -2,12 +2,21 @@ const express = require('express');
 const cors = require('cors');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
 const USER_ID            = 'suyashjha_23112004';   
 const EMAIL_ID           = 'sj2808@srmist.edu.in';     
 const COLLEGE_ROLL_NUMBER = 'RA2311003010923';         
+
+// Health check / GET endpoint
+app.get('/bfhl', (req, res) => {
+  res.json({ operation_code: 1 });
+});
 
 const VALID_EDGE = /^[A-Z]->[A-Z]$/;
 

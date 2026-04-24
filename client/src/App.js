@@ -4,6 +4,8 @@ import './App.css';
 import ResultDisplay from './components/ResultDisplay';
 import InputForm from './components/InputForm';
 
+const API_URL = process.env.REACT_APP_API_URL || '';
+
 function App() {
   const [input, setInput] = useState('');
   const [result, setResult] = useState(null);
@@ -22,7 +24,7 @@ function App() {
         .map(line => line.trim())
         .filter(line => line.length > 0);
 
-      const response = await axios.post('/bfhl', { data: entries });
+      const response = await axios.post(`${API_URL}/bfhl`, { data: entries });
       setResult(response.data);
     } catch (err) {
       setError(err.response?.data?.message || 'Error processing graph. Please check your input.');
