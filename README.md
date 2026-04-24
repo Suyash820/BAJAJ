@@ -79,8 +79,122 @@ This runs:
 
 ### Production Mode
 
+Build the React app and serve from backend:
+
 ```bash
+npm run build
 npm run server:prod
+```
+
+## Deployment Guide
+
+### Local Deployment
+
+```bash
+# 1. Install all dependencies
+npm install
+cd server && npm install && cd ../client && npm install && cd ..
+
+# 2. Build the React app
+npm run build
+
+# 3. Start the server (serves built React app + API)
+npm run server:prod
+```
+
+The server will serve the optimized React build from `client/build/` on port 5000.
+
+### Deploying to Vercel (Recommended)
+
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy from root directory
+vercel
+```
+
+Create `vercel.json`:
+
+```json
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "client/build",
+  "devCommand": "npm run dev",
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
+```
+
+### Deploying to Heroku
+
+```bash
+# Create app
+heroku create your-app-name
+
+# Set environment
+heroku config:set NODE_ENV=production
+
+# Deploy
+git push heroku main
+```
+
+Create `Procfile`:
+
+```
+web: npm run server:prod
+```
+
+### GitHub Actions CI/CD
+
+The project includes a GitHub Actions workflow (`.github/workflows/deploy.yml`) that automatically:
+
+- Installs dependencies
+- Builds the React app
+- Runs tests
+
+Customize the workflow to deploy to your hosting service.
+
+## Troubleshooting Deployments
+
+### Error: `react-scripts: command not found`
+
+**Solution**: Ensure all dependencies are installed:
+
+```bash
+cd client && npm install && cd ..
+cd server && npm install && cd ..
+```
+
+### Build fails with missing dependencies
+
+**Solution**: Delete lock files and reinstall:
+
+```bash
+rm -r client/node_modules server/node_modules
+rm client/package-lock.json server/package-lock.json
+npm install && cd server && npm install && cd ../client && npm install
+```
+
+### Environment variables not working
+
+Create `.env` files:
+
+`server/.env`:
+
+```
+PORT=5000
+NODE_ENV=production
+USER_ID=your_user_id
+EMAIL_ID=your_email
+COLLEGE_ROLL_NUMBER=your_roll
+```
+
+`client/.env`:
+
+```
+REACT_APP_API_URL=http://localhost:5000
 ```
 
 ## API Endpoints

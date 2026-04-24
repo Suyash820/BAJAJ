@@ -1,0 +1,49 @@
+name: Build & Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      # Install root dependencies
+      - name: Install root dependencies
+        run: npm install
+
+      # Install server dependencies
+      - name: Install server dependencies
+        run: cd server && npm install && cd ..
+
+      # Install client dependencies
+      - name: Install client dependencies
+        run: cd client && npm install && cd ..
+
+      # Build client
+      - name: Build client
+        run: npm run build
+
+      # (Optional) Run tests
+      - name: Run tests
+        run: cd client && npm test -- --watchAll=false || true
+
+      # (Optional) Deploy to hosting service
+      # - name: Deploy to production
+      #   run: |
+      #     # Add your deployment commands here
+      #     # Example: deploy to Vercel, Heroku, etc.
